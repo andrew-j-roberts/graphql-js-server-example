@@ -1,18 +1,17 @@
 import AWS from 'aws-sdk'
 const S3Client = new AWS.S3()
 
-export const getObject = ( dir, key ) => {
+export const getObject = ( bucketName, key ) => {
   return new Promise((resolve, reject) => {
     let params = {
-      Bucket: 'ajr-data', // bucket name
-      Key: `${key}` // path to the object 
+      Bucket: bucketName, 
+      Key: key
     }
     S3Client.getObject(params, (err, data) => {
       if (err) reject(err) // handle any error and exit
       let file = {
-        id: "HEY",
-        content: data.Body.toString('ascii'),
-        author: 'YAAAAAA'
+        name: key,
+        content: data.Body.toString('base64')
       }
       resolve(file)
     })
